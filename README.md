@@ -26,10 +26,10 @@ Before model development, I conducted thorough data exploration:
     Verified join conditions and business logic requirements
 
 ## Screenshot of the ERD
-![ERD Screenshot](tests/Schema_screenshot.png)
+![ERD Screenshot](tests/images/Schema_screenshot.png)
 
 ## Screenshot of the Graph from DBT website
-![Graph Screenshot](tests/Graph_screenshot.png)
+![Graph Screenshot](tests/images/Graph_screenshot.png)
 
 Data Models Implementation
 Source Configuration (schema.yml)
@@ -110,3 +110,15 @@ Technical Achievements
 ✅ Documentation-Driven Development: Self-documenting data models
 ✅ Scalable Data Models: Modular, reusable SQL transformations
 ✅ Professional Standards: Production-ready code with proper version control
+
+Screenshots of Outputs
+
+![ERD Screenshot](tests/images/output1.png)
+
+![ERD Screenshot](tests/images/output2.png)
+
+![ERD Screenshot](tests/images/output3.png)
+
+![ERD Screenshot](tests/images/output4.png)
+
+![ERD Screenshot](tests/images/output5.png)
