@@ -113,12 +113,10 @@ Technical Achievements
 
 Screenshots of Outputs
 
-![ERD Screenshot](tests/images/output1.png)
+![First Output](tests/images/output1.png)
 
-![ERD Screenshot](tests/images/output2.png)
+![Second Output](tests/images/output2.png)
 
-![ERD Screenshot](tests/images/output3.png)
+![Third Output](tests/images/output3.png)
 
-![ERD Screenshot](tests/images/output4.png)
-
-![ERD Screenshot](tests/images/output5.png)
+![Last Output](tests/images/output4.png)
