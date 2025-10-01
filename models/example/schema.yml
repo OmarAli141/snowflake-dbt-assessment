@@ -1,0 +1,180 @@
+version: 2
+
+# =====================
+# SOURCES
+# =====================
+sources:
+  - name: tpch
+    description: "Raw TPCH tables from Snowflake sample data"
+    database: snowflake_sample_data
+    schema: tpch_sf1
+    tables:
+      - name: customer
+        description: "TPCH customers table containing all customer information."
+        columns:
+          - name: c_custkey
+            description: "Customer primary key. Unique identifier for each customer."
+            tests:
+              - not_null
+
+      - name: orders
+        description: "Orders table with order details."
+        columns:
+          - name: o_orderkey
+            description: "Order primary key. Unique identifier for each order."
+            tests:
+              - not_null
+          - name: o_custkey
+            description: "Foreign key referencing customer.c_custkey. Links orders to customers."
+            tests:
+              - relationships:
+                  to: source('tpch', 'customer')
+                  field: c_custkey
+
+      - name: lineitem
+        description: "Line-item details for each order. Contains product-level information."
+        columns:
+          - name: l_orderkey
+            description: "Foreign key referencing orders.o_orderkey. Links line items to orders."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('tpch', 'orders')
+                  field: o_orderkey
+
+      - name: nation
+        description: "Nation lookup table containing nation keys and names."
+        columns:
+          - name: n_nationkey
+            description: "Nation primary key."
+            tests:
+              - not_null
+              - unique
+          - name: n_name
+            description: "Name of the nation."
+            tests:
+              - not_null
+          - name: n_regionkey
+            description: "Foreign key referencing region.regionkey."
+            tests:
+              - relationships:
+                  to: source('tpch', 'region')
+                  field: r_regionkey
+
+      - name: region
+        description: "Region lookup table containing region keys and names."
+        columns:
+          - name: r_regionkey
+            description: "Region primary key."
+            tests:
+              - not_null
+              - unique
+          - name: r_name
+            description: "Name of the region."
+            tests:
+              - not_null
+
+# =====================
+# MODELS
+# =====================
+models:
+  - name: my_first_dbt_model
+    description: |
+      Staging model for orders with customer information.
+      Business Logic:
+      - Join orders with customers to include customer_name.
+      - Extract order_year from order date for reporting.
+      - Keep total_price for analysis.
+    columns:
+      - name: o_orderkey
+        description: "Primary key for orders. Must be unique and not null."
+        tests:
+          - not_null
+          - unique
+      - name: o_custkey
+        description: "Customer key from orders table. Links to customer information."
+      - name: customer_name
+        description: "Customer name obtained by joining orders with customers."
+      - name: order_year
+        description: "Year extracted from order date using YEAR() function for reporting purposes."
+      - name: total_price
+        description: "Total price of the order as recorded in source table."
+
+  - name: my_second_dbt_model
+    description: |
+      Aggregated revenue per customer (gold layer).
+      Business Logic:
+      - Join orders, lineitems, and customers.
+      - Calculate revenue using SUM(l_extendedprice * (1 - l_discount)).
+      - Group by customer_id and customer_name.
+    columns:
+      - name: customer_id
+        description: "Customer primary key. Unique identifier per customer."
+        tests:
+          - not_null
+          - unique  # Ensures one row per customer
+      - name: customer_name
+        description: "Name of the customer for reporting."
+      - name: total_revenue
+        description: "Total revenue per customer, calculated from lineitems with discounts applied."
+
+  - name: bouns_model
+    description: |
+      Bonus model: Customer order statistics.
+      Business Logic:
+      - Join orders with customers.
+      - Count total number of orders per customer.
+      - Get first and last order dates for customer lifecycle analysis.
+    columns:
+      - name: customer_id
+        description: "Customer primary key. Unique identifier for each customer."
+        tests:
+          - not_null
+      - name: customer_name
+        description: "Customer name for reporting purposes."
+      - name: total_orders
+        description: "Total number of orders placed by the customer."
+      - name: first_order_date
+        description: "Date of the customer's first order (earliest order)."
+      - name: last_order_date
+        description: "Date of the customer's most recent order (latest order)."
+    
+  - name: bouns_model2
+    description: |
+      Bonus model: Join of nation and region tables.
+      Business Logic:
+      - Combine nation and region information in a single table.
+      - Useful for reporting and analytics where both nation and region names are required.
+    columns:
+      - name: nation_key
+        description: "Primary key of the nation."
+        tests:
+          - not_null
+          - unique
+      - name: region_key
+        description: "Primary key of the region."
+        tests:
+          - not_null
+      - name: nation_name
+        description: "Name of the nation."
+      - name: region_name
+        description: "Name of the region."
+
+
+# =====================
+# EXPOSURES (BONUS)
+# =====================
+exposures:
+  - name: sales_dashboard
+    type: dashboard
+    maturity: high
+    url: https://looker.mycompany.com/dashboards/1
+    description: |
+      Dashboard showing sales KPIs. Depends on my_second_dbt_model (customer revenue)
+      and bouns_model (customer order stats).
+    depends_on:
+      - ref('my_second_dbt_model')
+      - ref('bouns_model')
+    owner:
+      name: Data Team
+      email: data-team@company.com
