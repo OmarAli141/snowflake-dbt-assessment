@@ -26,10 +26,10 @@ Before model development, I conducted thorough data exploration:
     Verified join conditions and business logic requirements
 
 ## Screenshot of the ERD
-![ERD Screenshot](test/Schema_screenshot.png)
+![ERD Screenshot](tests/Schema_screenshot.png)
 
 ## Screenshot of the Graph from DBT website
-![Graph Screenshot](test/Graph_screenshot.png)
+![Graph Screenshot](tests/Graph_screenshot.png)
 
 Data Models Implementation
 Source Configuration (schema.yml)
