@@ -120,3 +120,11 @@ Screenshots of Outputs
 ![Third Output](tests/images/output3.png)
 
 ![Last Output](tests/images/output4.png)
+
+Screenshots of Debugging, DBT run and DBT test
+
+![Debugging](tests/images/debug_screenshot.png)
+
+![dbt_run](tests/images/run_screenshot.png)
+
+![dbt_test](tests/images/test_screenshot.png)
