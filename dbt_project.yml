@@ -1,7 +1,6 @@
-name: 'my_new_project'
+name: 'snowflake_tpch_demo'   
 version: '1.0.0'
-
-profile: 'my_new_project'
+profile: 'snowflake_tpch_demo'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -16,6 +15,5 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  my_new_project:
+  snowflake_tpch_demo:
     +materialized: table
-    +database: SNOWFLAKE_SAMPLE_DATA     
