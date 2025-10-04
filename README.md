@@ -3,6 +3,7 @@ Project Overview
 
 This project demonstrates a modern data engineering workflow using Snowflake as the data warehouse and dbt (data build tool) for transformation, testing, and documentation. The implementation follows medallion architecture principles to build reliable, tested data models from TPCH sample data.
 Architecture & Setup
+
 Platform Integration
 
     Snowflake Account: Configured with access to TPCH sample datasets
